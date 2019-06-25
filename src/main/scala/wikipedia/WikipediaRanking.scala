@@ -13,7 +13,7 @@ case class WikipediaArticle(title: String, text: String) {
 
 object WikipediaRanking {
 
-  val langList = List(
+  val langs = List(
     "JavaScript", "Java", "PHP", "Python", "C#", "C++", "Ruby", "CSS",
     "Objective-C", "Perl", "Scala", "Haskell", "MATLAB", "Clojure", "Groovy")
 
@@ -79,11 +79,11 @@ object WikipediaRanking {
 
     /* Languages ranked according to (1) */
     val langListRanked: List[(String, Int)] = timed("Part 1: naive ranking",
-      rankLangs(langList, wikiRdd))
+      rankLangs(langs, wikiRdd))
     langListRanked.foreach(println)
 
     /* An inverted index mapping languages to wikipedia pages on which they appear */
-    def index: RDD[(String, Iterable[WikipediaArticle])] = makeIndex(langList, wikiRdd)
+    def index: RDD[(String, Iterable[WikipediaArticle])] = makeIndex(langs, wikiRdd)
 
     /* Languages ranked according to (2), using the inverted index */
     val langListRanked2: List[(String, Int)] = timed("Part 2: ranking using inverted index",
@@ -92,7 +92,7 @@ object WikipediaRanking {
 
     /* Languages ranked according to (3) */
     val langListRanked3: List[(String, Int)] = timed("Part 3: ranking using reduceByKey",
-      rankLangsReduceByKey(langList, wikiRdd))
+      rankLangsReduceByKey(langs, wikiRdd))
     langListRanked3.foreach(println)
 
     /* Output the speed of each ranking */
